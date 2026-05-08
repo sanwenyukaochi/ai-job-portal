@@ -1,18 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-
 
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>4.0.5</version>
-        <relativePath/>
+        <relativePath />
     </parent>
-
 
     <groupId>com.zosh.job</groupId>
     <artifactId>job-portal-system</artifactId>
@@ -31,8 +28,8 @@
         <spring.cloud.version>2025.1.0</spring.cloud.version>
         <jjwt.version>0.12.6</jjwt.version>
         <lombok.version>1.18.36</lombok.version>
+        <spotless.version>3.3.0</spotless.version>
     </properties>
-
 
     <dependencyManagement>
         <dependencies>
@@ -44,11 +41,11 @@
                 <scope>import</scope>
             </dependency>
 
-<!--            <dependency>-->
-<!--                <groupId>com.zosh.job</groupId>-->
-<!--                <artifactId>job-portal-common</artifactId>-->
-<!--                <version>${project.version}</version>-->
-<!--            </dependency>-->
+            <!--            <dependency>-->
+            <!--                <groupId>com.zosh.job</groupId>-->
+            <!--                <artifactId>job-portal-common</artifactId>-->
+            <!--                <version>${project.version}</version>-->
+            <!--            </dependency>-->
 
             <dependency>
                 <groupId>io.jsonwebtoken</groupId>
@@ -72,10 +69,7 @@
             </dependency>
 
         </dependencies>
-
     </dependencyManagement>
-
-
 
     <build>
         <pluginManagement>
@@ -89,19 +83,63 @@
                         <target>26</target>
                     </configuration>
                 </plugin>
+
                 <plugin>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
                     <version>${spring.boot.version}</version>
                 </plugin>
+
                 <plugin>
                     <groupId>com.google.cloud.tools</groupId>
                     <artifactId>jib-maven-plugin</artifactId>
                     <version>3.5.1</version>
                 </plugin>
-            </plugins>
 
+                <plugin>
+                    <groupId>com.diffplug.spotless</groupId>
+                    <artifactId>spotless-maven-plugin</artifactId>
+                    <version>${spotless.version}</version>
+
+                    <configuration>
+                        <java>
+                            <googleJavaFormat>
+                                <version>1.25.2</version>
+                                <style>AOSP</style>
+                            </googleJavaFormat>
+                            <removeUnusedImports />
+                            <trimTrailingWhitespace />
+                            <endWithNewline />
+                            <excludes>
+                                <exclude>**/target/**</exclude>
+                                <exclude>**/generated-sources/**</exclude>
+                            </excludes>
+                        </java>
+
+                        <pom>
+                            <sortPom>
+                                <encoding>UTF-8</encoding>
+                                <nrOfIndentSpace>4</nrOfIndentSpace>
+                                <keepBlankLines>true</keepBlankLines>
+                                <indentBlankLines>false</indentBlankLines>
+                                <indentSchemaLocation>true</indentSchemaLocation>
+                                <spaceBeforeCloseEmptyElement>true</spaceBeforeCloseEmptyElement>
+                            </sortPom>
+                        </pom>
+
+                        <lineEndings>UNIX</lineEndings>
+                    </configuration>
+                </plugin>
+            </plugins>
         </pluginManagement>
+
+        <plugins>
+            <plugin>
+                <groupId>com.diffplug.spotless</groupId>
+                <artifactId>spotless-maven-plugin</artifactId>
+                <version>${spotless.version}</version>
+            </plugin>
+        </plugins>
     </build>
 
 </project>
