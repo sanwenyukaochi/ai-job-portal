@@ -20,6 +20,7 @@
 
     <modules>
         <module>cloud</module>
+        <module>services</module>
     </modules>
 
     <properties>
@@ -122,7 +123,7 @@
                                 <nrOfIndentSpace>4</nrOfIndentSpace>
                                 <keepBlankLines>true</keepBlankLines>
                                 <indentBlankLines>false</indentBlankLines>
-                                <indentSchemaLocation>true</indentSchemaLocation>
+                                <indentAttribute>schemaLocation</indentAttribute>
                                 <spaceBeforeCloseEmptyElement>true</spaceBeforeCloseEmptyElement>
                             </sortPom>
                         </pom>
