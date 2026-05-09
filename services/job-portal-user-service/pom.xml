@@ -11,7 +11,7 @@
     </parent>
 
     <artifactId>job-portal-user-service</artifactId>
-    <name>job-portal-user-services</name>
+    <name>job-portal-user-service</name>
     <description>User Service - Auth, Profile, and User Management for Job Portal</description>
 
     <dependencies>
