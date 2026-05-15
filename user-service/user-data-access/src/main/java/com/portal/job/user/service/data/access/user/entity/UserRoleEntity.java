@@ -1,6 +1,6 @@
 package com.portal.job.user.service.data.access.user.entity;
 
-import com.portal.job.data.user.service.domain.valueobject.UserRole;
+import com.portal.job.data.user.service.domain.valueobject.Role;
 import jakarta.persistence.*;
 import java.time.ZonedDateTime;
 import java.util.Objects;
@@ -21,7 +21,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
         uniqueConstraints = {
             @UniqueConstraint(
                     name = "uk_user_role",
-                    columnNames = {"user_id", "role"})
+                    columnNames = {"USER_ID", "role"})
         })
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -31,23 +31,13 @@ public class UserRoleEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(
-            targetEntity = UserEntity.class,
-            cascade = {},
-            fetch = FetchType.LAZY,
-            optional = false)
-    @JoinColumn(
-            name = "USER_ID",
-            referencedColumnName = "id",
-            unique = false,
-            nullable = false,
-            insertable = true,
-            updatable = true)
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "USER_ID", referencedColumnName = "id", nullable = false, unique = true)
     private UserEntity user;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
-    private UserRole role;
+    private Role role;
 
     @CreatedBy
     @Column(name = "created_by", nullable = false, updatable = false)
