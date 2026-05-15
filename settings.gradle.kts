@@ -39,5 +39,9 @@ include(
     ":infrastructure:middleware:kafka:kafka-consumer",
     ":infrastructure:middleware:rabbitmq:rabbitmq-config-data",
     ":infrastructure:middleware:rabbitmq:rabbitmq-producer",
-    ":infrastructure:middleware:rabbitmq:rabbitmq-consumer"
+    ":infrastructure:middleware:rabbitmq:rabbitmq-consumer",
+    ":user-service:user-container",
+    ":user-service:user-data-access",
+    ":user-service:user-domain:user-application-service",
+    ":user-service:user-domain:user-domain-core",
 )
