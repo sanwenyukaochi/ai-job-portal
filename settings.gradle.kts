@@ -29,6 +29,10 @@ dependencyResolutionManagement {
 rootProject.name = "job-portal-system"
 
 include(
+    ":common",
+    ":common:common-application",
+    ":common:common-data-access",
+    ":common:common-domain",
     ":infrastructure:middleware:kafka:kafka-config-data",
     ":infrastructure:middleware:kafka:kafka-producer",
     ":infrastructure:middleware:kafka:kafka-model",
