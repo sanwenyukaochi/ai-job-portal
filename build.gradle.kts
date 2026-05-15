@@ -22,49 +22,64 @@ extra["postgresqlVersion"] = "42.7.10"
 extra["jspecifyVersion"] = "1.0.0"
 extra["redissonVersion"] = "4.3.0"
 extra["hutoolVersion"] = "5.8.41"
+extra["mockitoVersion"] = "5.12.0"
+extra["springKafkaVersion"] = "3.2.2"
+extra["kafkaAvroSerializerVersion"] = "7.7.0"
+extra["avroVersion"] = "1.12.0"
 
-subprojects {
-    apply(plugin = "java-library")
-    apply(plugin = "io.spring.dependency-management")
-    apply(plugin = "com.diffplug.spotless")
-    apply(plugin = "checkstyle")
-
+allprojects {
     group = rootProject.group
     version = rootProject.version
+}
 
-    extensions.configure<DependencyManagementExtension> {
-        imports {
-            mavenBom(SpringBootPlugin.BOM_COORDINATES)
+subprojects {
+    pluginManager.withPlugin("java") {
+        apply(plugin = "com.diffplug.spotless")
+
+        extensions.configure<JavaPluginExtension> {
+            sourceCompatibility = JavaVersion.VERSION_26
+            targetCompatibility = JavaVersion.VERSION_26
+            toolchain {
+                languageVersion.set(JavaLanguageVersion.of(26))
+            }
+            withSourcesJar()
+        }
+
+        dependencies {
+            add("compileOnly", "org.projectlombok:lombok")
+            add("annotationProcessor", "org.projectlombok:lombok")
+            add("testCompileOnly", "org.projectlombok:lombok")
+            add("testAnnotationProcessor", "org.projectlombok:lombok")
+            add("implementation", "org.springframework.boot:spring-boot-starter-logging")
+            add("testImplementation", "org.mockito:mockito-core")
+        }
+
+        tasks.withType<Test> {
+            useJUnitPlatform()
+        }
+
+        tasks.named("compileJava") {
+            dependsOn(tasks.named("spotlessCheck"))
         }
     }
 
-    extensions.configure<JavaPluginExtension> {
-        toolchain {
-            languageVersion.set(JavaLanguageVersion.of(25))
+    pluginManager.withPlugin("io.spring.dependency-management") {
+        extensions.configure<DependencyManagementExtension> {
+            imports {
+                mavenBom(SpringBootPlugin.BOM_COORDINATES)
+            }
         }
     }
 
-    dependencies {
-        "compileOnly"("org.projectlombok:lombok")
-        "annotationProcessor"("org.projectlombok:lombok")
-
-        "testImplementation"("org.springframework.boot:spring-boot-starter-test")
-        "testImplementation"("org.springframework.security:spring-security-test")
-        "testRuntimeOnly"("org.junit.platform:junit-platform-launcher")
+    pluginManager.withPlugin("org.springframework.boot") {
+        extensions.configure<SpringBootExtension> {
+            buildInfo()
+        }
     }
 
     pluginManager.withPlugin("com.diffplug.spotless") {
         extensions.configure<SpotlessExtension> {
             encoding("UTF-8")
-            java {
-                palantirJavaFormat()
-                importOrder()
-                removeUnusedImports()
-                formatAnnotations()
-                trimTrailingWhitespace()
-                endWithNewline()
-                toggleOffOn()
-            }
 
             kotlin {
                 ktlint()
@@ -74,24 +89,19 @@ subprojects {
                 ktlint()
             }
         }
-    }
 
-    tasks.withType<Test> {
-        useJUnitPlatform()
-    }
-
-    tasks.named("compileJava") {
-        dependsOn(tasks.named("spotlessCheck"))
-    }
-}
-
-allprojects () {
-    apply(plugin = "org.springframework.boot")
-    apply(plugin = "com.gorylenko.gradle-git-properties")
-
-    pluginManager.withPlugin("org.springframework.boot") {
-        extensions.configure<SpringBootExtension> {
-            buildInfo()
+        pluginManager.withPlugin("java") {
+            extensions.configure<SpotlessExtension> {
+                java {
+                    palantirJavaFormat()
+                    importOrder()
+                    removeUnusedImports()
+                    formatAnnotations()
+                    trimTrailingWhitespace()
+                    endWithNewline()
+                    toggleOffOn()
+                }
+            }
         }
     }
 }
