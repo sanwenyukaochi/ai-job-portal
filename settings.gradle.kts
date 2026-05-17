@@ -48,4 +48,5 @@ include(
     ":user-service:user-data-access",
     ":user-service:user-domain:user-application-service",
     ":user-service:user-domain:user-domain-core",
+    ":user-service:user-security",
 )
