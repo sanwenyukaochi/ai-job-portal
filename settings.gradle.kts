@@ -1,6 +1,7 @@
 pluginManagement {
     repositories {
         mavenCentral()
+        maven { setUrl("https://packages.confluent.io/maven/") }
         maven { setUrl("https://maven.aliyun.com/repository/central") }
         maven { setUrl("https://maven.aliyun.com/repository/jcenter") }
         maven { setUrl("https://maven.aliyun.com/repository/google") }
@@ -17,6 +18,7 @@ dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         mavenCentral()
+        maven { setUrl("https://packages.confluent.io/maven/") }
         maven { setUrl("https://maven.aliyun.com/repository/central") }
         maven { setUrl("https://maven.aliyun.com/repository/jcenter") }
         maven { setUrl("https://maven.aliyun.com/repository/google") }
@@ -40,6 +42,8 @@ include(
     ":infrastructure:middleware:rabbitmq:rabbitmq-config-data",
     ":infrastructure:middleware:rabbitmq:rabbitmq-producer",
     ":infrastructure:middleware:rabbitmq:rabbitmq-consumer",
+    ":infrastructure:outbox",
+    ":infrastructure:saga",
     ":user-service:user-container",
     ":user-service:user-data-access",
     ":user-service:user-domain:user-application-service",

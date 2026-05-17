@@ -23,9 +23,9 @@ extra["jspecifyVersion"] = "1.0.0"
 extra["redissonVersion"] = "4.3.0"
 extra["hutoolVersion"] = "5.8.41"
 extra["mockitoVersion"] = "5.12.0"
-extra["springKafkaVersion"] = "3.2.2"
+extra["springKafkaVersion"] = "4.0.5"
 extra["kafkaAvroSerializerVersion"] = "7.7.0"
-extra["avroVersion"] = "1.12.0"
+extra["avroVersion"] = "1.11.4"
 
 allprojects {
     group = rootProject.group
@@ -67,6 +67,11 @@ subprojects {
         extensions.configure<DependencyManagementExtension> {
             imports {
                 mavenBom(SpringBootPlugin.BOM_COORDINATES)
+            }
+            dependencies {
+                dependency("org.springframework.kafka:spring-kafka:${property("springKafkaVersion")}")
+                dependency("io.confluent:kafka-avro-serializer:${property("kafkaAvroSerializerVersion")}")
+                dependency("org.apache.avro:avro:${property("avroVersion")}")
             }
         }
     }

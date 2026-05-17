@@ -4,6 +4,7 @@ plugins {
 }
 
 dependencies {
+    api(project(":infrastructure:outbox"))
     api(project(":infrastructure:middleware:kafka:kafka-model"))
     api(project(":infrastructure:middleware:kafka:kafka-config-data"))
     api("org.springframework.kafka:spring-kafka")
