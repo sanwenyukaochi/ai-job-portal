@@ -61,6 +61,32 @@ public class UserAccount extends AggregateRoot<UserId> {
                 createdAt);
     }
 
+    public static UserAccount rehydrate(
+            UserId userId,
+            EmailAddress email,
+            Credential credential,
+            UserRole role,
+            AuthProvider authProvider,
+            AccountStatus status,
+            boolean verified,
+            int tokenVersion,
+            Instant createdAt,
+            Instant updatedAt,
+            Instant lastLoginAt,
+            Instant suspendedAt,
+            Instant deletedAt) {
+        UserAccount userAccount =
+                new UserAccount(userId, email, credential, role, authProvider, createdAt);
+        userAccount.status = status;
+        userAccount.verified = verified;
+        userAccount.tokenVersion = tokenVersion;
+        userAccount.updatedAt = updatedAt;
+        userAccount.lastLoginAt = lastLoginAt;
+        userAccount.suspendedAt = suspendedAt;
+        userAccount.deletedAt = deletedAt;
+        return userAccount;
+    }
+
     public void ensureCanAuthenticate() {
         if (status == AccountStatus.SUSPENDED) {
             throw new UserDomainException("Suspended user cannot login.");

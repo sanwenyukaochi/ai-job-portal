@@ -38,6 +38,18 @@ public class UserProfile extends AggregateRoot<UserId> {
         return new UserProfile(userId, fullName, phoneNumber, avatarUrl, createdAt);
     }
 
+    public static UserProfile rehydrate(
+            UserId userId,
+            FullName fullName,
+            PhoneNumber phoneNumber,
+            AvatarUrl avatarUrl,
+            Instant createdAt,
+            Instant updatedAt) {
+        UserProfile userProfile = new UserProfile(userId, fullName, phoneNumber, avatarUrl, createdAt);
+        userProfile.updatedAt = updatedAt;
+        return userProfile;
+    }
+
     public void updateBasicInfo(
             FullName fullName,
             PhoneNumber phoneNumber,
