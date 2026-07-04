@@ -1,16 +1,16 @@
-package com.portal.job.domain.valueobject;
+package com.portal.job.user.service.domain.valueobject;
+
+import lombok.AccessLevel;
+import lombok.Getter;
 
 import java.util.Objects;
 
 public abstract class BaseId<T> {
+    @Getter(AccessLevel.PUBLIC)
     private final T value;
 
     protected BaseId(T value) {
         this.value = value;
-    }
-
-    public T getValue() {
-        return value;
     }
 
     @Override

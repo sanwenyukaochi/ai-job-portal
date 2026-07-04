@@ -1,4 +1,4 @@
-package com.portal.job.domain.entity;
+package com.portal.job.user.service.domain.entity;
 
 import java.util.Objects;
 import lombok.AccessLevel;
