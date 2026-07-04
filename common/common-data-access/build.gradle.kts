@@ -3,5 +3,9 @@ plugins {
     id("io.spring.dependency-management")
 }
 
+repositories {
+    mavenCentral()
+}
+
 dependencies {
 }

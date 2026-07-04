@@ -30,7 +30,7 @@ configure<DependencyGraphGeneratorExtension> {
 }
 
 allprojects {
-    group = "com.kittens.exploding"
+    group = "com.portal.job"
     version = "0.0.1-SNAPSHOT"
     pluginManager.apply("com.diffplug.spotless")
 

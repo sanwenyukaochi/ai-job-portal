@@ -1,17 +1,14 @@
 package com.portal.job.domain.entity;
 
 import java.util.Objects;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 
 public abstract class BaseEntity<ID> {
+    @Getter(AccessLevel.PUBLIC)
+    @Setter(AccessLevel.PUBLIC)
     private ID id;
-
-    public ID getId() {
-        return id;
-    }
-
-    public void setId(ID id) {
-        this.id = id;
-    }
 
     @Override
     public boolean equals(Object o) {
