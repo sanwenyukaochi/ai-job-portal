@@ -9,6 +9,7 @@ include(
     ":user-service:user-application",
     ":user-service:user-container",
     ":user-service:user-data-access",
+    ":user-service:user-security",
     ":user-service:user-domain",
     ":user-service:user-domain:user-application-service",
     ":user-service:user-domain:user-domain-core",
