@@ -8,5 +8,5 @@ repositories {
 }
 
 dependencies {
-    implementation(":common:common-domain")
+    implementation(project(":common:common-domain"))
 }
