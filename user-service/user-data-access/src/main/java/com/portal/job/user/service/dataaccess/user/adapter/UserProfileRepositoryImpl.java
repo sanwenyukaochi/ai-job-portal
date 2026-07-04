@@ -30,6 +30,7 @@ public class UserProfileRepositoryImpl implements UserProfileRepository {
     @Override
     public UserProfile save(UserProfile userProfile) {
         return userDataAccessMapper.entityToUserProfile(
-                userProfileJpaRepository.save(userDataAccessMapper.userProfileToEntity(userProfile)));
+                userProfileJpaRepository.save(
+                        userDataAccessMapper.userProfileToEntity(userProfile)));
     }
 }

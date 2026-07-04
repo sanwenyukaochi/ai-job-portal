@@ -25,6 +25,7 @@ public final class UserResponseAssembler {
     }
 
     public static AuthResponse toResponse(AuthView view) {
-        return new AuthResponse(view.title(), view.message(), view.token(), toResponse(view.user()));
+        return new AuthResponse(
+                view.title(), view.message(), view.token(), toResponse(view.user()));
     }
 }

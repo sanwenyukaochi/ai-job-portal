@@ -88,7 +88,10 @@ public class AuthApplicationServiceImpl implements AuthApplicationService {
         UserAccount account =
                 userAccountRepository
                         .findByEmail(EmailAddress.of(email))
-                        .orElseThrow(() -> new UserDomainException("User not found with email: " + email));
+                        .orElseThrow(
+                                () ->
+                                        new UserDomainException(
+                                                "User not found with email: " + email));
         account.ensureCanAuthenticate();
         if (!passwordHasher.matches(rawPassword, account.getCredential().getPasswordHash())) {
             throw new UserDomainException("Invalid password.");

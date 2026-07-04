@@ -17,6 +17,7 @@ import com.portal.job.user.service.domain.core.valueobject.PasswordHash;
 import com.portal.job.user.service.domain.core.valueobject.PhoneNumber;
 import com.portal.job.user.service.domain.core.valueobject.UserId;
 import com.portal.job.user.service.domain.core.valueobject.UserRole;
+
 import org.springframework.stereotype.Component;
 
 @Component
@@ -62,8 +63,14 @@ public class UserDataAccessMapper {
         return UserProfileEntity.builder()
                 .userId(userProfile.getId().getValue())
                 .fullName(userProfile.getFullName().getValue())
-                .phone(userProfile.getPhoneNumber() == null ? null : userProfile.getPhoneNumber().getValue())
-                .avatarUrl(userProfile.getAvatarUrl() == null ? null : userProfile.getAvatarUrl().getValue())
+                .phone(
+                        userProfile.getPhoneNumber() == null
+                                ? null
+                                : userProfile.getPhoneNumber().getValue())
+                .avatarUrl(
+                        userProfile.getAvatarUrl() == null
+                                ? null
+                                : userProfile.getAvatarUrl().getValue())
                 .createdAt(userProfile.getCreatedAt())
                 .updatedAt(userProfile.getUpdatedAt())
                 .build();

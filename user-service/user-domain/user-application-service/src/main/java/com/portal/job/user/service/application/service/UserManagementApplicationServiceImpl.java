@@ -43,7 +43,8 @@ public class UserManagementApplicationServiceImpl implements UserManagementAppli
     }
 
     @Override
-    public UserView updateCurrentProfile(String email, String fullName, String phone, String avatarUrl) {
+    public UserView updateCurrentProfile(
+            String email, String fullName, String phone, String avatarUrl) {
         UserAccount account = getAccountByEmail(email);
         UserProfile profile = getProfile(account.getId());
         profile.updateBasicInfo(

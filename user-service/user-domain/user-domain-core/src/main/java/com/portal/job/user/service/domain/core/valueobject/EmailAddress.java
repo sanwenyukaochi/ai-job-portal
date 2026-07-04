@@ -1,6 +1,7 @@
 package com.portal.job.user.service.domain.core.valueobject;
 
 import com.portal.job.user.service.domain.core.exception.UserDomainException;
+
 import java.util.Objects;
 
 public final class EmailAddress {

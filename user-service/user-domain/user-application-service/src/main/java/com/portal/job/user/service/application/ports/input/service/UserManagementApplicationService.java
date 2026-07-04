@@ -2,6 +2,7 @@ package com.portal.job.user.service.application.ports.input.service;
 
 import com.portal.job.user.service.application.view.UserView;
 import com.portal.job.user.service.domain.core.valueobject.UserRole;
+
 import java.util.List;
 
 public interface UserManagementApplicationService {

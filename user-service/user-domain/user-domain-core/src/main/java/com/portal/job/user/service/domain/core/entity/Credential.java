@@ -1,6 +1,7 @@
 package com.portal.job.user.service.domain.core.entity;
 
 import com.portal.job.user.service.domain.core.valueobject.PasswordHash;
+
 import java.time.Instant;
 
 public class Credential {

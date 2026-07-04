@@ -1,6 +1,7 @@
 package com.portal.job.user.service.domain.core.valueobject;
 
 import com.portal.job.user.service.domain.valueobject.BaseId;
+
 import java.util.UUID;
 
 public class UserId extends BaseId<UUID> {

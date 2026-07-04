@@ -2,6 +2,7 @@ package com.portal.job.user.service.security.adapter;
 
 import com.portal.job.user.service.application.ports.output.security.PasswordHasher;
 import com.portal.job.user.service.domain.core.valueobject.PasswordHash;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 

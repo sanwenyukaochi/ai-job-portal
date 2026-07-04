@@ -14,7 +14,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UserDomainException.class)
     public ResponseEntity<ApiError> handleDomainException(
             UserDomainException ex, HttpServletRequest request) {
-        HttpStatus status = ex.getMessage().contains("not found") ? HttpStatus.NOT_FOUND : HttpStatus.BAD_REQUEST;
+        HttpStatus status =
+                ex.getMessage().contains("not found")
+                        ? HttpStatus.NOT_FOUND
+                        : HttpStatus.BAD_REQUEST;
         return build(status, ex.getMessage(), request.getRequestURI());
     }
 
@@ -37,6 +40,12 @@ public class GlobalExceptionHandler {
 
     private ResponseEntity<ApiError> build(HttpStatus status, String message, String path) {
         return ResponseEntity.status(status)
-                .body(new ApiError(Instant.now(), status.value(), status.getReasonPhrase(), message, path));
+                .body(
+                        new ApiError(
+                                Instant.now(),
+                                status.value(),
+                                status.getReasonPhrase(),
+                                message,
+                                path));
     }
 }

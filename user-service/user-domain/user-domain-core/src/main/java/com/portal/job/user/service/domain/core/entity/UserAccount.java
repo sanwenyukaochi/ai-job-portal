@@ -9,6 +9,7 @@ import com.portal.job.user.service.domain.core.valueobject.PasswordHash;
 import com.portal.job.user.service.domain.core.valueobject.UserId;
 import com.portal.job.user.service.domain.core.valueobject.UserRole;
 import com.portal.job.user.service.domain.entity.AggregateRoot;
+
 import java.time.Instant;
 
 public class UserAccount extends AggregateRoot<UserId> {

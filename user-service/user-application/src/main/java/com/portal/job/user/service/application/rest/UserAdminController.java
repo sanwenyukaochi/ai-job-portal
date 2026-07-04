@@ -26,7 +26,8 @@ public class UserAdminController {
     @GetMapping("/{userId}")
     public ResponseEntity<UserResponse> getUserById(@PathVariable String userId) {
         return ResponseEntity.ok(
-                UserResponseAssembler.toResponse(userManagementApplicationService.getUserById(userId)));
+                UserResponseAssembler.toResponse(
+                        userManagementApplicationService.getUserById(userId)));
     }
 
     @GetMapping
@@ -40,19 +41,22 @@ public class UserAdminController {
     @PatchMapping("/{userId}/suspend")
     public ResponseEntity<UserResponse> suspendUser(@PathVariable String userId) {
         return ResponseEntity.ok(
-                UserResponseAssembler.toResponse(userManagementApplicationService.suspendUser(userId)));
+                UserResponseAssembler.toResponse(
+                        userManagementApplicationService.suspendUser(userId)));
     }
 
     @PatchMapping("/{userId}/activate")
     public ResponseEntity<UserResponse> activateUser(@PathVariable String userId) {
         return ResponseEntity.ok(
-                UserResponseAssembler.toResponse(userManagementApplicationService.activateUser(userId)));
+                UserResponseAssembler.toResponse(
+                        userManagementApplicationService.activateUser(userId)));
     }
 
     @DeleteMapping("/{userId}")
     public ResponseEntity<UserResponse> deleteUser(@PathVariable String userId) {
         return ResponseEntity.ok(
-                UserResponseAssembler.toResponse(userManagementApplicationService.deleteUser(userId)));
+                UserResponseAssembler.toResponse(
+                        userManagementApplicationService.deleteUser(userId)));
     }
 
     @PatchMapping("/{userId}/role")

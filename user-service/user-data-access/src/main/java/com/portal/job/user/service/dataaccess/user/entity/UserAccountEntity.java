@@ -22,8 +22,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "user_accounts", schema = "user_identity")
 public class UserAccountEntity {
-    @Id
-    private UUID id;
+    @Id private UUID id;
 
     @Column(nullable = false, unique = true)
     private String email;

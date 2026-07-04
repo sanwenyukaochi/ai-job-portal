@@ -6,6 +6,7 @@ import com.portal.job.user.service.domain.core.valueobject.FullName;
 import com.portal.job.user.service.domain.core.valueobject.PhoneNumber;
 import com.portal.job.user.service.domain.core.valueobject.UserId;
 import com.portal.job.user.service.domain.entity.AggregateRoot;
+
 import java.time.Instant;
 
 public class UserProfile extends AggregateRoot<UserId> {
@@ -45,7 +46,8 @@ public class UserProfile extends AggregateRoot<UserId> {
             AvatarUrl avatarUrl,
             Instant createdAt,
             Instant updatedAt) {
-        UserProfile userProfile = new UserProfile(userId, fullName, phoneNumber, avatarUrl, createdAt);
+        UserProfile userProfile =
+                new UserProfile(userId, fullName, phoneNumber, avatarUrl, createdAt);
         userProfile.updatedAt = updatedAt;
         return userProfile;
     }

@@ -3,6 +3,7 @@ package com.portal.job.user.service.application.ports.output.repository;
 import com.portal.job.user.service.domain.core.entity.UserAccount;
 import com.portal.job.user.service.domain.core.valueobject.EmailAddress;
 import com.portal.job.user.service.domain.core.valueobject.UserId;
+
 import java.util.List;
 import java.util.Optional;
 

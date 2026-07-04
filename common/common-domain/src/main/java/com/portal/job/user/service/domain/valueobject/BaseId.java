@@ -1,9 +1,8 @@
 package com.portal.job.user.service.domain.valueobject;
 
+import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.Getter;
-
-import java.util.Objects;
 
 public abstract class BaseId<T> {
     @Getter(AccessLevel.PUBLIC)
