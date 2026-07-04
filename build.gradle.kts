@@ -1,41 +1,108 @@
 import com.diffplug.gradle.spotless.SpotlessExtension
+import com.vanniktech.dependency.graph.generator.DependencyGraphGeneratorExtension
+import com.vanniktech.dependency.graph.generator.DependencyGraphGeneratorPlugin
+import guru.nidi.graphviz.attribute.Color
+import guru.nidi.graphviz.attribute.Style
 import io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension
-import org.gradle.api.plugins.JavaPluginExtension
-import org.gradle.api.tasks.testing.Test
-import org.springframework.boot.gradle.plugin.SpringBootPlugin
 import org.springframework.boot.gradle.dsl.SpringBootExtension
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 plugins {
-    id("org.springframework.boot") version "4.0.5" apply false
+    id("org.springframework.boot") version "4.1.0" apply false
     id("io.spring.dependency-management") version "1.1.7" apply false
-    id("com.gorylenko.gradle-git-properties") version "2.5.7" apply false
-    id("com.diffplug.spotless") version "8.4.0" apply false
+    id("com.diffplug.spotless") version "8.7.0"
+    id("com.vanniktech.dependency.graph.generator") version "0.8.0"
+    id("io.github.flumennigrum.gradle.avro") version "0.1.0" apply false
 }
 
-group = "com.portal.job"
-version = "0.0.1-SNAPSHOT"
+repositories {
+    mavenCentral()
+}
 
-extra["springdocVersion"] = "3.0.2"
-extra["commonsLangVersion"] = "3.20.0"
-extra["jjwtVersion"] = "0.13.0"
-extra["postgresqlVersion"] = "42.7.10"
-extra["jspecifyVersion"] = "1.0.0"
-extra["redissonVersion"] = "4.3.0"
-extra["hutoolVersion"] = "5.8.41"
-extra["mockitoVersion"] = "5.12.0"
-extra["springKafkaVersion"] = "4.0.5"
-extra["kafkaAvroSerializerVersion"] = "7.7.0"
-extra["avroVersion"] = "1.11.4"
+plugins.apply(DependencyGraphGeneratorPlugin::class.java)
+
+configure<DependencyGraphGeneratorExtension> {
+    generators.create("jetbrainsLibraries") {
+        include = { dependency -> dependency.moduleGroup.startsWith("org.jetbrains") }
+        children = { true }
+        dependencyNode = { node, _ -> node.add(Style.FILLED, Color.rgb("#AF1DF5")) }
+    }
+}
 
 allprojects {
-    group = rootProject.group
-    version = rootProject.version
+    group = "com.kittens.exploding"
+    version = "0.0.1-SNAPSHOT"
+    pluginManager.apply("com.diffplug.spotless")
+
+    pluginManager.withPlugin("com.diffplug.spotless") {
+        extensions.configure<SpotlessExtension> {
+            encoding("UTF-8")
+            java {
+                target("**/*.java")
+                forbidWildcardImports()
+                forbidModuleImports()
+                googleJavaFormat()
+                    .aosp()
+                    .reflowLongStrings(false)
+                    .formatJavadoc(true)
+                    .reorderImports(true)
+                importOrder()
+                removeUnusedImports()
+                formatAnnotations()
+                trimTrailingWhitespace()
+                endWithNewline()
+                toggleOffOn()
+            }
+
+            kotlin {
+                target("**/*.kt")
+                ktlint()
+                trimTrailingWhitespace()
+                endWithNewline()
+                toggleOffOn()
+            }
+
+            kotlinGradle {
+                target("**/*.gradle.kts")
+                ktlint()
+                trimTrailingWhitespace()
+                endWithNewline()
+                toggleOffOn()
+            }
+
+            gherkin {
+                target("**/*.feature")
+                gherkinUtils()
+                trimTrailingWhitespace()
+                endWithNewline()
+                toggleOffOn()
+            }
+
+            toml {
+                target("**/*.toml")
+                versionCatalog()
+                    .stripQuotedKeys(true)
+                trimTrailingWhitespace()
+                endWithNewline()
+                toggleOffOn()
+            }
+
+            json {
+                target("**/*.json")
+                gson()
+                    .indentWithSpaces(4)
+                    .sortByKeys()
+                    .escapeHtml()
+                trimTrailingWhitespace()
+                endWithNewline()
+                toggleOffOn()
+            }
+        }
+    }
 }
 
 subprojects {
     pluginManager.withPlugin("java") {
-        apply(plugin = "com.diffplug.spotless")
-
         extensions.configure<JavaPluginExtension> {
             sourceCompatibility = JavaVersion.VERSION_26
             targetCompatibility = JavaVersion.VERSION_26
@@ -43,36 +110,6 @@ subprojects {
                 languageVersion.set(JavaLanguageVersion.of(26))
             }
             withSourcesJar()
-        }
-
-        dependencies {
-            add("compileOnly", "org.projectlombok:lombok")
-            add("annotationProcessor", "org.projectlombok:lombok")
-            add("testCompileOnly", "org.projectlombok:lombok")
-            add("testAnnotationProcessor", "org.projectlombok:lombok")
-            add("implementation", "org.springframework.boot:spring-boot-starter-logging")
-            add("testImplementation", "org.mockito:mockito-core")
-        }
-
-        tasks.withType<Test> {
-            useJUnitPlatform()
-        }
-
-        tasks.named("compileJava") {
-            dependsOn(tasks.named("spotlessCheck"))
-        }
-    }
-
-    pluginManager.withPlugin("io.spring.dependency-management") {
-        extensions.configure<DependencyManagementExtension> {
-            imports {
-                mavenBom(SpringBootPlugin.BOM_COORDINATES)
-            }
-            dependencies {
-                dependency("org.springframework.kafka:spring-kafka:${property("springKafkaVersion")}")
-                dependency("io.confluent:kafka-avro-serializer:${property("kafkaAvroSerializerVersion")}")
-                dependency("org.apache.avro:avro:${property("avroVersion")}")
-            }
         }
     }
 
@@ -82,30 +119,26 @@ subprojects {
         }
     }
 
-    pluginManager.withPlugin("com.diffplug.spotless") {
-        extensions.configure<SpotlessExtension> {
-            encoding("UTF-8")
-
-            kotlin {
-                ktlint()
+    pluginManager.withPlugin("io.spring.dependency-management") {
+        extensions.configure<DependencyManagementExtension> {
+            imports {
+                mavenBom(SpringBootPlugin.BOM_COORDINATES)
             }
-
-            kotlinGradle {
-                ktlint()
-            }
-        }
-
-        pluginManager.withPlugin("java") {
-            extensions.configure<SpotlessExtension> {
-                java {
-                    palantirJavaFormat()
-                    importOrder()
-                    removeUnusedImports()
-                    formatAnnotations()
-                    trimTrailingWhitespace()
-                    endWithNewline()
-                    toggleOffOn()
-                }
+            dependencies {
+                dependency("io.confluent:kafka-avro-serializer:${libs.versions.kafkaAvroSerializer.get()}")
+                dependency("org.apache.avro:avro:${libs.versions.avro.get()}")
+                dependency("org.redisson:redisson:${libs.versions.redisson.get()}")
+                dependency("cn.hutool:hutool-core:${libs.versions.hutool.get()}")
+                dependency("org.springdoc:springdoc-openapi-starter-webmvc-ui:${libs.versions.springdoc.get()}")
+                dependency("org.postgresql:postgresql:${libs.versions.postgresql.get()}")
+                dependency("io.cucumber:cucumber-java:${libs.versions.cucumber.get()}")
+                dependency("io.cucumber:cucumber-junit:${libs.versions.cucumber.get()}")
+                dependency("io.cucumber:cucumber-spring:${libs.versions.cucumber.get()}")
+                dependency("org.testcontainers:testcontainers:${libs.versions.testcontainers.get()}")
+                dependency("org.testcontainers:kafka:${libs.versions.testcontainers.get()}")
+                dependency("org.testcontainers:postgresql:${libs.versions.testcontainers.get()}")
+                dependency("org.testcontainers:junit-jupiter:${libs.versions.testcontainers.get()}")
+                dependency("com.tngtech.archunit:archunit-junit5:${libs.versions.archunitJunit5.get()}")
             }
         }
     }
