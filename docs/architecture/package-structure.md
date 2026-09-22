@@ -147,11 +147,14 @@ approved library -X-> concrete business context
 
 ## 测试包
 
+- 测试分层、工具和执行门禁统一遵守 `docs/architecture/testing-strategy.md`。
 - 测试包镜像被测生产包。
 - Domain 单元测试位于 `domain-core`，不启动 Spring。
 - 应用用例测试位于 `application-service`，通过 fake/mock 替代输出端口。
-- 协议、持久化和消息测试留在对应 adapter。
-- 跨模块装配测试位于 `container`。
+- 协议测试留在对应 adapter 的 `src/test`；需要数据库、消息设施或完整协议环境的测试使用该模块的 `src/integrationTest`。
+- 跨模块装配集成测试位于 `container/src/integrationTest`。
+- Cucumber 验收测试位于对应部署单元的 `container/src/acceptanceTest`，仅在已确认场景存在时创建。
+- 当前不创建仓库级 Cucumber 或 `system-tests` 模块，也不跨微服务共享 Step Definition。
 - 每个部署单元的 `ArchitectureTests` 使用 `com.portal.job.<context>` 作为检查根包。
 
 ## 与参考项目的关系

@@ -14,6 +14,7 @@
 - [Gradle 模块与 Java 包结构规范](architecture/package-structure.md)
 - [REST API 响应规范](architecture/rest-api-conventions.md)
 - [ArchUnit 架构测试规范](architecture/architecture-testing.md)
+- [测试策略与组织规范](architecture/testing-strategy.md)
 
 只有出现多个真实方案、并作出长期有效的技术决策时，才新增 `docs/adr/NNNN-<decision>.md`。
 
