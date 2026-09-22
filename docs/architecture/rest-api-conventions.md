@@ -2,6 +2,7 @@
 
 - 状态：Confirmed
 - 确认日期：2026-09-22
+- 最近修订日期：2026-09-23
 - 适用范围：所有对外和服务间 REST 入站适配器
 
 ## 标准基线
@@ -61,6 +62,8 @@ Content-Type: application/json
 ## 错误响应
 
 错误响应的媒体类型必须是 `application/problem+json`。
+
+所有 REST 响应文本必须使用英文，包括 `title`、`detail`、字段校验 `message`、成功消息以及其他人类可读字段。错误 `code`、JSON 字段名和 URI 标识使用稳定的英文 ASCII 表达；不得向客户端返回中文文本。
 
 ```http
 HTTP/1.1 409 Conflict
@@ -156,6 +159,6 @@ REST 适配器测试至少验证：
 - 成功响应没有全局包装。
 - 错误响应符合 Problem Details 必需字段及稳定 `code`。
 - 校验错误的 `errors` 内容和顺序。
+- 所有响应文本均为英文，不包含中文字符。
 - `204` 响应没有响应体。
 - `500` 响应不泄漏内部异常信息。
-

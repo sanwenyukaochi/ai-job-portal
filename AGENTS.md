@@ -72,6 +72,9 @@
 
 - 使用 Java 26、Gradle Kotlin DSL 和当前版本目录。
 - Gradle 模块、Java 包、可见性和适配器命名遵守 `docs/architecture/package-structure.md`。
+- 生产代码、测试代码、配置和迁移脚本中的标识符、字符串、注释及 Javadoc 必须使用英文，禁止出现中文。
+- REST 响应、校验消息、异常消息、日志、OpenAPI 描述和其他运行时输出必须使用英文；错误响应的具体规则见 `docs/architecture/rest-api-conventions.md`。
+- `docs/` 中用于业务讨论和规范说明的 Markdown 可以使用中文；该例外不得扩展到源码或运行时输出。
 - 未完成第 4 阶段，不创建业务模块；未完成第 5 阶段，不写生产业务逻辑。
 - 业务规则放在领域模型或领域服务中，不放在 Controller、Persistence Mapper 或外部客户端中。
 - 端口按业务能力命名，例如 `LoadJobPort`，不按框架命名。
