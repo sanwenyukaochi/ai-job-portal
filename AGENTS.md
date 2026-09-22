@@ -45,6 +45,16 @@
 
 依赖只能向内：`adapter -> application-service -> domain-core`。领域层不得导入 Spring、Jakarta Persistence、Kafka、Feign、Jackson 或数据库类型。
 
+## REST 响应规范
+
+所有 REST 入站适配器必须遵守 `docs/architecture/rest-api-conventions.md`：
+
+- 成功响应使用 HTTP 状态码表达结果，直接返回资源，不使用全局 `ApiResponse<T>` 包装。
+- 创建资源返回 `201 Created` 和 `Location`；成功删除且无响应内容时返回 `204 No Content`。
+- 错误响应使用 RFC 9457 `application/problem+json`，通过稳定的 `type` 和 `code` 表达机器可读语义。
+- 不得返回 `200 OK` 错误体，不得在 `500` 响应中暴露异常消息、堆栈、SQL 或内部服务信息。
+- HTTP 状态、Problem Details 和协议 DTO 只存在于入站适配器，不得进入应用层或领域层。
+
 ## 上下文与微服务规则
 
 - 旧项目的一个 service 不自动等于一个限界上下文；限界上下文也不自动等于一个部署单元。
@@ -80,4 +90,3 @@
 - 不修改两个参考项目。
 - 不提交密钥、真实账号、生成目录或 IDE 文件。
 - 不覆盖用户未提交的改动；发现冲突先停下说明。
-

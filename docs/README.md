@@ -8,6 +8,11 @@
 - `specs/`：每项业务能力的六阶段工作文档与讨论记录。
 - `architecture/`：已经确认的全局架构约束；具体上下文边界只能在 spec 第 4 阶段写入。
 
+已确认的全局规范：
+
+- [六边形架构依赖原则](architecture/hexagonal-architecture.md)
+- [REST API 响应规范](architecture/rest-api-conventions.md)
+
 只有出现多个真实方案、并作出长期有效的技术决策时，才新增 `docs/adr/NNNN-<decision>.md`。
 
 ## 阶段流转
