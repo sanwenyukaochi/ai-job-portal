@@ -56,6 +56,8 @@ container                   -> application-service + required adapters
 
 禁止共享：User、Job、Application 等领域实体，服务专属枚举，JPA Entity，Repository，业务请求/响应 DTO。重复两个小 DTO 优于制造跨服务编译耦合。
 
+项目不使用 Spring Modulith，也不创建 `shared OPEN`。模块级物理隔离由 Gradle 模块负责，代码级边界由 ArchUnit + Taikai 验证；只有已确认的稳定跨模块契约可以通过专用 API 暴露，不得把整个领域模型包作为公共接口。
+
 ## 约束验证
 
 - Gradle 模块依赖负责第一层隔离。

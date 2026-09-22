@@ -9,6 +9,8 @@
 
 架构约束必须由测试自动执行，不能只依赖文档和代码评审。Taikai 提供通用 Java、JUnit 和 Spring 规则；项目特有的六边形依赖规则使用其底层 ArchUnit API 补充。
 
+项目不使用 Spring Modulith 或 `ModularityTest`。Gradle 在编译期实施模块级物理隔离，ArchUnit + Taikai 验证模块内部及跨模块代码依赖规则，避免维护第二套模块模型。
+
 参考资料：
 
 - [Taikai 官方文档](https://enofex.github.io/taikai/documentation/)
@@ -118,4 +120,3 @@ class ArchitectureTests {
 - 使用 `failOnEmpty(true)`，避免包名错误或无匹配类时测试假通过。
 - 禁止使用 `@Disabled` 绕过失败；规则变更必须回到对应 spec 的第 4 阶段讨论。
 - 第 5 阶段必须演示至少一个故意违反边界的 Red 结果，随后删除违规样例，再进入功能实现。
-
