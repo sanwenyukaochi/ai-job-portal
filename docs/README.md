@@ -11,6 +11,7 @@
 已确认的全局规范：
 
 - [六边形架构依赖原则](architecture/hexagonal-architecture.md)
+- [Gradle 模块与 Java 包结构规范](architecture/package-structure.md)
 - [REST API 响应规范](architecture/rest-api-conventions.md)
 - [ArchUnit 架构测试规范](architecture/architecture-testing.md)
 

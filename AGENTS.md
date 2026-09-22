@@ -70,6 +70,7 @@
 ## 实现规则
 
 - 使用 Java 26、Gradle Kotlin DSL 和当前版本目录。
+- Gradle 模块、Java 包、可见性和适配器命名遵守 `docs/architecture/package-structure.md`。
 - 未完成第 4 阶段，不创建业务模块；未完成第 5 阶段，不写生产业务逻辑。
 - 业务规则放在领域模型或领域服务中，不放在 Controller、Persistence Mapper 或外部客户端中。
 - 端口按业务能力命名，例如 `LoadJobPort`，不按框架命名。
