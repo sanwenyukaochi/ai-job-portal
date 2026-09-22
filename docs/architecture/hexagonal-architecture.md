@@ -52,7 +52,7 @@ container                   -> application-service + required adapters
 
 ## 通用代码边界
 
-允许共享：基础 ID 类型、Money 等确实跨上下文稳定的值类型、通用错误协议、消息基础设施。
+允许共享：Money 等确实跨上下文稳定且无业务归属的值类型、通用错误协议、消息基础设施。JDK `long`/`Long` 无需通过项目 Library 共享；`JobPostingId`、`ApplicationId` 等领域 ID 必须由所属上下文拥有，具体规则见 [标识符与主键生成策略](identifier-strategy.md)。
 
 禁止共享：User、Job、Application 等领域实体，服务专属枚举，JPA Entity，Repository，业务请求/响应 DTO。重复两个小 DTO 优于制造跨服务编译耦合。
 

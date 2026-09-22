@@ -58,6 +58,20 @@
 - 不得返回 `200 OK` 错误体，不得在 `500` 响应中暴露异常消息、堆栈、SQL 或内部服务信息。
 - HTTP 状态、Problem Details 和协议 DTO 只存在于入站适配器，不得进入应用层或领域层。
 
+## 标识符与主键规范
+
+所有新建模型必须遵守 `docs/architecture/identifier-strategy.md`：
+
+- 聚合根和可独立寻址实体默认使用 CosId `SnowflakeId`；位布局固定为 `1 unused + 41 timestamp + 10 machine + 12 sequence`，项目纪元固定为 `2026-01-01T00:00:00Z`。
+- 多实例环境使用 CosId `RedisMachineIdDistributor` 管理 `0..1023` 的 Machine ID；不得自研 `WorkerIdProvider`、Redis Lua 或使用 Hutool。只启用 Snowflake，不启用 Segment、Safe-JS、Friendly 或 Radix 生成器。
+- CosId 与 Redis 依赖只进入 Container。Container 将 `SnowflakeId::generate` 作为 `LongSupplier` 装配给 Application Service；Domain 使用 `JobPostingId` 等上下文自有值对象，不使用裸 `long`、`Long`、`String`、通用 `BaseId<T>` 或共享业务 ID 类型。
+- PostgreSQL 使用 `bigint`；JPA Entity 只映射已有 ID，禁止 `@GeneratedValue`、sequence、`GenerationType.IDENTITY` 和数据库默认生成。
+- 值对象和纯关联表不添加无意义代理 ID；自然键保持为独立字段及唯一约束。
+- 同一环境的全部微服务共享 CosId namespace 和 Redis Machine ID 注册表；Redis 或 Machine ID 守护失败时停止写入，禁止回退到手工、随机或本机编号。时钟回拨交给 CosId 同步，超过固定阈值时失败。
+- 外部 REST、JSON、OpenAPI 和消息契约必须将 Snowflake ID 表示为十进制字符串，避免 JavaScript 53-bit 精度损失。
+- 不使用 ID 表达业务时间或严格顺序；不引入中央 ID 服务或跨服务 ID Library。
+- 旧系统 `Long IDENTITY` 只在已确认的数据迁移中作为服务内 `legacy_id` 映射，不进入新领域或外部契约。
+
 ## 上下文与微服务规则
 
 - 旧项目的一个 service 不自动等于一个限界上下文；限界上下文也不自动等于一个部署单元。

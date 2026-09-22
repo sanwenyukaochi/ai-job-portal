@@ -139,7 +139,7 @@ HTTP/1.1 200 OK
 Content-Type: application/json
 
 {
-  "id": "01J00000000000000000000000",
+  "id": "95936353140740097",
   "email": "user@example.com",
   "status": "ACTIVE"
 }
