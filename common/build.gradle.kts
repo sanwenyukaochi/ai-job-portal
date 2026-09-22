@@ -1,9 +1,0 @@
-plugins {
-}
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-}
