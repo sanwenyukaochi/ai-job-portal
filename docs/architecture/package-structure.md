@@ -12,28 +12,47 @@ Gradle 模块负责物理依赖隔离，Java 包负责模块内部职责表达�
 
 ## Gradle 物理模块
 
-一个确认后的部署单元按实际需要从以下模块中选择：
+一个确认后的部署单元使用自己的顶层目录。`domain-core`、`application-service` 和 `container` 保持同级，适配器按输入、输出方向分组：
 
 ```text
-<context>-domain-core
-<context>-application-service
-<context>-adapter-in-web
-<context>-adapter-in-messaging
-<context>-adapter-out-persistence
-<context>-adapter-out-http
-<context>-adapter-out-messaging
-<context>-container
+<context>/
+├── domain-core/
+├── application-service/
+├── adapters/
+│   ├── in/
+│   │   ├── web/
+│   │   └── messaging/
+│   └── out/
+│       ├── persistence/
+│       ├── http/
+│       └── messaging/
+└── container/
 ```
 
-只有 `domain-core`、`application-service` 和 `container` 是六边形骨架中的角色；具体适配器模块仅在用例确实需要对应技术时创建。例如，没有消息消费就不创建 `adapter-in-messaging`。
+对应的 Gradle 项目路径为：
+
+```text
+:<context>:domain-core
+:<context>:application-service
+:<context>:adapters:in:web
+:<context>:adapters:in:messaging
+:<context>:adapters:out:persistence
+:<context>:adapters:out:http
+:<context>:adapters:out:messaging
+:<context>:container
+```
+
+`<context>`、`adapters`、`in` 和 `out` 是分组层级，不包含生产源码或业务依赖；只有叶子项目包含代码并产出 Jar。具体适配器仅在用例确实需要对应技术时创建，例如没有消息消费就不创建 `adapters/in/messaging`。
+
+不在 `domain-core` 和 `application-service` 外增加 `domain` 分组，因为应用层不属于领域层；也不增加没有隔离作用的 `core` 空壳层。
 
 依赖方向固定为：
 
 ```text
-application-service          -> domain-core
-adapter-in-*                 -> application-service
-adapter-out-*                -> application-service + domain-core
-container                    -> application-service + 本部署单元所需的 adapter
+:<context>:application-service     -> :<context>:domain-core
+:<context>:adapters:in:*           -> :<context>:application-service
+:<context>:adapters:out:*          -> :<context>:application-service + :<context>:domain-core
+:<context>:container               -> :<context>:application-service + 本部署单元所需的 adapter
 ```
 
 - `domain-core` 不依赖其他业务模块或框架。
@@ -47,32 +66,32 @@ container                    -> application-service + 本部署单元所需的 a
 Gradle 模块与基础包一一对应：
 
 ```text
-<context>-domain-core
+<context>/domain-core
 └── com.portal.job.<context>.domain
     └── <aggregate>
 
-<context>-application-service
+<context>/application-service
 └── com.portal.job.<context>.application
     ├── port.in
     ├── port.out
     └── usecase
 
-<context>-adapter-in-web
+<context>/adapters/in/web
 └── com.portal.job.<context>.adapter.in.web
 
-<context>-adapter-in-messaging
+<context>/adapters/in/messaging
 └── com.portal.job.<context>.adapter.in.messaging
 
-<context>-adapter-out-persistence
+<context>/adapters/out/persistence
 └── com.portal.job.<context>.adapter.out.persistence
 
-<context>-adapter-out-http
+<context>/adapters/out/http
 └── com.portal.job.<context>.adapter.out.http
 
-<context>-adapter-out-messaging
+<context>/adapters/out/messaging
 └── com.portal.job.<context>.adapter.out.messaging
 
-<context>-container
+<context>/container
 └── com.portal.job.<context>.container
 ```
 
@@ -111,6 +130,7 @@ Gradle 模块与基础包一一对应：
 参考项目用于验证 `domain -> application -> adapter -> container` 的依赖思想，不是目录模板。本项目明确改进以下结构：
 
 - 应用层不再放入 `.domain` 包。
+- `domain-core` 与 `application-service` 不再共同嵌套在名为 `domain` 的父项目中。
 - REST 入站适配器不再使用含糊的 `application` 模块名。
 - 消息入站与消息出站不放入同一个 adapter 模块。
 - Container 不放入 `.domain` 包，也不扫描整个系统根包。
