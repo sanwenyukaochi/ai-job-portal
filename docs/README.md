@@ -12,6 +12,7 @@
 
 - [六边形架构依赖原则](architecture/hexagonal-architecture.md)
 - [REST API 响应规范](architecture/rest-api-conventions.md)
+- [ArchUnit 架构测试规范](architecture/architecture-testing.md)
 
 只有出现多个真实方案、并作出长期有效的技术决策时，才新增 `docs/adr/NNNN-<decision>.md`。
 
@@ -39,4 +40,3 @@
 5. 下一轮才开始下一阶段。
 
 当前入口：[0001 — 业务全景与首个能力选择](specs/0001-business-capability-analysis.md)，目前停留在第 1 阶段。
-

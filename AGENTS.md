@@ -81,7 +81,8 @@
 - 领域规则使用不启动 Spring 的单元测试。
 - 应用用例使用输出端口 fake/mock，不连接真实基础设施。
 - 适配器测试覆盖映射、序列化、数据库约束和协议边界。
-- 架构测试阻止向外依赖。
+- 架构测试遵守 `docs/architecture/architecture-testing.md`，使用 ArchUnit + Taikai 阻止反向依赖、循环依赖和框架越界。
+- 每个确认后的部署单元都必须包含可执行的 `ArchitectureTests`，并启用 `failOnEmpty(true)`，禁止空规则集静默通过。
 - 实现阶段至少运行相关测试、`./gradlew spotlessCheck` 和 `./gradlew check`；结果写回 spec。
 
 ## 修改纪律

@@ -139,6 +139,7 @@ subprojects {
                 dependency("org.testcontainers:postgresql:${libs.versions.testcontainers.get()}")
                 dependency("org.testcontainers:junit-jupiter:${libs.versions.testcontainers.get()}")
                 dependency("com.tngtech.archunit:archunit-junit5:${libs.versions.archunitJunit5.get()}")
+                dependency("com.enofex:taikai:${libs.versions.taikai.get()}")
             }
         }
     }

@@ -13,8 +13,11 @@ postgresql = "42.7.11"
 redisson = "4.6.1"
 springAi = "2.0.0-M5"
 springdoc = "3.0.3"
+taikai = "1.60.0"
 testcontainers = "2.0.5"
 
 [libraries]
+archunit-junit5 = { module = "com.tngtech.archunit:archunit-junit5", version.ref = "archunitJunit5" }
+taikai = { module = "com.enofex:taikai", version.ref = "taikai" }
 
 [plugins]
