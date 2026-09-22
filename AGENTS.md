@@ -64,6 +64,7 @@
 - `common` 只允许稳定、无明确业务归属的原语，不得重建共享 DTO/枚举大杂烩。
 - 项目不使用 Spring Modulith，也不创建 `shared OPEN`；模块级物理隔离由 Gradle 模块负责，代码级边界由 ArchUnit + Taikai 验证。
 - 只有第 4 阶段确认的稳定跨模块契约才能通过专用 API 暴露，不得公开整个领域模型包。
+- 默认禁止自建跨微服务运行时 Library；各服务独立拥有技术配置和 Adapter。纯技术复用只有满足 `docs/architecture/package-structure.md` 的门禁并经 ADR 批准后才能提取。
 - 每个确认后的服务拥有自己的数据模型；跨服务不得建立数据库外键。
 - Outbox、Saga、缓存和重试只在业务规则及边界 spec 明确需要时引入。
 

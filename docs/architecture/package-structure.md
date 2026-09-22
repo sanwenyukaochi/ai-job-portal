@@ -2,6 +2,7 @@
 
 - 状态：Confirmed
 - 确认日期：2026-09-22
+- 最近修订日期：2026-09-23
 - 适用范围：所有业务上下文和部署单元
 
 ## 目的
@@ -115,6 +116,34 @@ Gradle 模块与基础包一一对应：
 - Controller、JPA Entity、Spring Data Repository、Mapper 和适配器实现保持 package-private，除非框架存在经过验证的硬性要求。
 - REST DTO、数据库 Entity、外部服务 DTO 和消息传输模型不得作为跨层或跨服务领域契约。
 - 默认不创建 `common` 或 `shared` 模块；只有第 4 阶段确认的稳定、无业务归属原语才允许进入独立公共模块。
+
+## 跨微服务技术复用
+
+项目默认不创建 `platform` 或 `libraries` 等跨微服务纯技术运行时模块。每个微服务独立拥有自己的 Adapter、Spring 配置、Kafka 配置、数据库配置、安全配置和 Bean 装配；少量重复优于共享 Library 造成的发布耦合。领域原语的共享仍受上一节的独立约束，不得借技术复用门禁引入业务模型。
+
+以下内容可以在仓库级统一，但不属于跨微服务运行时 Library：
+
+- Gradle Convention Plugin 放在 `build-logic`。
+- 依赖版本使用 Version Catalog 或 BOM 管理。
+- Docker、Kubernetes、Terraform 等部署资源放在 `deploy`。
+- 格式化、测试和 ArchUnit/Taikai 基线规则由根构建统一。
+- 消息契约由生产者上下文拥有并版本化，不放入公共技术 Library。
+
+只有同时满足以下条件，并通过 ADR 明确批准，才能创建 `libraries/<name>`：
+
+1. 至少两个微服务已经存在相同的非业务技术实现，并因同一技术原因变化。
+2. Library 不包含业务 DTO、领域对象、业务枚举、消息契约或具体上下文包引用。
+3. 只有 Adapter 或 Container 依赖该 Library；Domain Core 和 Application Service 不得依赖。
+4. 各微服务可以独立选择 Library 版本，无须同步发布。
+5. Library 具有独立测试、兼容策略和明确维护者。
+
+```text
+adapter/container -> approved library
+domain/application -X-> approved library
+approved library -X-> concrete business context
+```
+
+没有获批 Library 时不创建 `libraries` 空目录。`platform` 不作为六边形架构层或仓库目录名称使用。
 
 ## 测试包
 
