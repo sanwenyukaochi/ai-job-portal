@@ -1,4 +1,3 @@
 rootProject.name = "job-portal-system"
 
-include(
-)
+include()
