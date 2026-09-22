@@ -45,10 +45,13 @@
 
 依赖只能向内：`adapter -> application-service -> domain-core`。领域层不得导入 Spring、Jakarta Persistence、Kafka、Feign、Jackson 或数据库类型。
 
-## REST 响应规范
+## REST API 契约规范
 
 所有 REST 入站适配器必须遵守 `docs/architecture/rest-api-conventions.md`：
 
+- 业务 API 使用 `/v{major}` 作为第一个契约路径段，只公开主版本；不提供无版本默认入口，不使用 Header、Query 或 Media Type 作为并行版本来源。
+- Spring Framework 7 使用原生 `ApiVersionConfigurer` 与 `@RequestMapping(version = "...")` 路由版本；版本只存在于 Web Adapter，不进入 Application、Domain 或 Persistence。
+- 兼容修改在当前主版本原地演进，破坏性修改必须在 spec 第 4 阶段确认后创建新主版本，并保留明确的并行迁移和废弃周期。
 - 成功响应使用 HTTP 状态码表达结果，直接返回资源，不使用全局 `ApiResponse<T>` 包装。
 - 创建资源返回 `201 Created` 和 `Location`；成功删除且无响应内容时返回 `204 No Content`。
 - 错误响应使用 RFC 9457 `application/problem+json`，通过稳定的 `type` 和 `code` 表达机器可读语义。

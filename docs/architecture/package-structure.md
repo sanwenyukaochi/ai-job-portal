@@ -103,6 +103,8 @@ Gradle 模块与基础包一一对应：
 - `application.port.in` 包含用例接口及应用命令/查询；`application.port.out` 包含应用所需的外部能力接口。
 - `application.usecase` 只负责编排用例与事务意图，业务不变量留在 Domain。
 - REST Controller、协议请求/响应和 Problem Details 映射只位于 `adapter.in.web`。
+- REST 主版本使用 `adapter.in.web.v1`、`adapter.in.web.v2` 子包隔离 Controller、协议 DTO 和 Mapper；只有确认破坏性变化后才创建新版本包。
+- REST 版本不得进入 Domain Core、Application Service、Persistence Adapter 或数据库模型。
 - 消息 listener 只位于 `adapter.in.messaging`；publisher 只位于 `adapter.out.messaging`。
 - JPA Entity、Spring Data Repository 和持久化 Mapper 只位于 `adapter.out.persistence`。
 - 外部 HTTP DTO、Client 和 Mapper 只位于 `adapter.out.http`。
